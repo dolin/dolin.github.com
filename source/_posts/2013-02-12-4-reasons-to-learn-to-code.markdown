@@ -1,19 +1,18 @@
 ---
 layout: post
 title: "4 Reasons To Learn To Code"
-date: 2013-02-05 18:17
+date: 2013-02-12 09:13
 comments: true
-categories:
-sharing: true 
+categories: 
 ---
 
 Everyone has their own reasons for learning how to code. Here are mine. 
 
 <strong>To create products.</strong>
 
-I’ve been a musician since learning guitar at 12 and have always been driven by the creative process. The concept of creating something from nothing that makes my life and others lives better as well is pretty cool. 
+I’ve been a musician since learning guitar at 12 and have always been driven by the creative process. The concept of creating something from nothing that makes my life and others' lives better as well is pretty cool. 
 
-<strong>To execute on a vision. </strong>
+<strong>To execute on a vision.</strong>
 
 We’ve all seen this one before: business guy comes up with an idea, stays up all night thinking about it, scribbles the business model down along with an outlined marketing/sales plan, and then realizes he’s stuck. How is he going to execute? How is he going to create a MVP to begin testing his hypotheses? The short answer - he’s not unless he gets a tech guy to join him. Most likely, he’ll search through his network contacting developers only to find that they are all working on ideas of their own. I’m tired of having to rely on someone else to bring my ideas to life. 
 
