@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures Into Code]]></title>
   <link href="http://dolin.github.com/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-02-24T14:25:55-05:00</updated>
+  <updated>2013-02-26T17:11:28-05:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Creating My First Ruby App]]></title>
+    <title type="html"><![CDATA[Creating My Songkick-to-Calendar App]]></title>
     <link href="http://dolin.github.com/blog/2013/02/23/creating-my-first-ruby-app/"/>
     <updated>2013-02-23T14:58:00-05:00</updated>
     <id>http://dolin.github.com/blog/2013/02/23/creating-my-first-ruby-app</id>
@@ -23,7 +23,15 @@
 <h3><strong>1. Idea.</strong></h3>
 
 
-<p>Concert listing scraper that takes user input and automatically adds events of your favorite artists to your calendar.</p>
+<p>Concert listing scraper that asks for user input and automatically adds events of your favorite artists to your calendar.</p>
+
+<p>The final product:</p>
+
+<p><img src="http://s11.postimage.org/iav6sea2b/Screen_Shot_2013_02_26_at_4_59_01_PM.png"></p>
+
+<p>Songkick found two Beyonce shows on August 3rd and 4th at the Barclays Center in Brooklyn, NY. Both files were created in the current directory. Below I&#8217;ve opened the files with iCal.</p>
+
+<p><img src="http://s17.postimage.org/m48aa7s7j/Screen_Shot_2013_02_26_at_5_07_07_PM.png"></p>
 
 <h3><strong>2. Oh shit.</strong></h3>
 
