@@ -199,7 +199,7 @@
 </span><span class='line'>
 </span><span class='line'><span class="n">doc</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;http://api.songkick.com/api/3.0/search/locations.json?query=&#39;</span><span class="si">#{</span><span class="n">interpolate</span> <span class="n">user</span> <span class="n">location</span><span class="si">}</span><span class="s2">&#39;&amp;apikey=&#39;Your Songkick API Key&#39;).read</span>
 </span><span class='line'><span class="s2">location_hash = JSON.parse(doc)</span>
-</span><span class='line'><span class="s2">location_id = location_hash[&quot;</span><span class="n">resultsPage</span><span class="s2">&quot;][&quot;</span><span class="n">results</span><span class="s2">&quot;][&quot;</span><span class="n">location</span><span class="s2">&quot;][0].flatten[1][&quot;</span><span class="nb">id</span><span class="s2">&quot;]</span>
+</span><span class='line'><span class="s2">location_id = location_hash.flatten[1][&quot;</span><span class="n">results</span><span class="s2">&quot;][&quot;</span><span class="n">location</span><span class="s2">&quot;][0][&quot;</span><span class="n">metroArea</span><span class="s2">&quot;][&quot;</span><span class="nb">id</span><span class="s2">&quot;]</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
