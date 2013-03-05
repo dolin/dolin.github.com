@@ -9,7 +9,7 @@
   <meta name="author" content="Danny Olinsky">
 
   
-  <meta name="description" content="Last week, myself and two other Flatiron students were assigned with building and presenting our own ruby command line interface (CLI) applications. &hellip;">
+  <meta name="description" content="We began our foray into Rails last week. As expected, a ton of questions immediately came to mind once diving into a few tutorials. This post will &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,130 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/04/understanding-rails-routes/">Understanding Rails&#8217; Routes</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-04T22:03:00-05:00" pubdate data-updated="true">Mar 4<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We began our foray into Rails last week. As expected, a ton of questions immediately came to mind once diving into a few tutorials. This post will address the routes that Rails automatically builds upon generation of resources and scaffolds.</p>
+
+<p>As a Ruby framework, Rails essentially creates your application&#8217;s skeleton so that the programmer can get right to building the muscle of the app (not sure if that analogy makes sense, but sounded good at the time).</p>
+
+<p>In creating the skeleton, Rails abstracts out many parts of your application into files that it has already created. For a Ruby newb, this is both incredible and confusing. It&#8217;s an awesome feeling to be able to startup the rails server, edit the controller, create a view or two with some forms, and automagically see your code in action. But, the hidden logic which lies within a new Rails&#8217; application begs the question, &#8220;How does all of this actually work?&#8221;</p>
+
+<p>While there are a ton of books to learn about the ins and outs of Rails, let&#8217;s take a look at one small, but extremely important piece: <strong>routes</strong>.</p>
+
+<p>Let&#8217;s pretend you have created a new rails app for RSVPing to an event. To kick things off, you run the following in terminal to generate a User resource:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ rails generate scaffold User
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Along with creating a controller, model, migration, and other files, Rails also creates routes for you. Take a look within your config directory and you&#8217;ll see a &#8216;routes.rb&#8217; file. Within the first few lines, you should see something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">RsvpApp</span><span class="p">:</span><span class="ss">:Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">resources</span> <span class="ss">:users</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This one line of code blew my mind. All of a sudden (if you created the respective views and controller actions), you could navigate to paths such as http://localhost:4000/users, http://localhost:4000/user/new, or even fill out a form and have your data be stored to a database.</p>
+
+<p>Let&#8217;s take a closer look at what happens. Run the following within your app&#8217;s directory in terminal:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">rake</span> <span class="n">routes</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should get output similar to this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>    <span class="n">users</span> <span class="no">GET</span>    <span class="sr">/users(.:format)          users#index</span>
+</span><span class='line'><span class="sr">          POST   /use</span><span class="n">rs</span><span class="p">(</span><span class="o">.</span><span class="ss">:format</span><span class="p">)</span>          <span class="n">users</span><span class="c1">#create</span>
+</span><span class='line'> <span class="n">new_user</span> <span class="no">GET</span>    <span class="sr">/users/ne</span><span class="n">w</span><span class="p">(</span><span class="o">.</span><span class="ss">:format</span><span class="p">)</span>      <span class="n">users</span><span class="c1">#new</span>
+</span><span class='line'><span class="n">edit_user</span> <span class="no">GET</span>    <span class="sr">/users/</span><span class="ss">:id</span><span class="o">/</span><span class="n">edit</span><span class="p">(</span><span class="o">.</span><span class="ss">:format</span><span class="p">)</span> <span class="n">users</span><span class="c1">#edit</span>
+</span><span class='line'>     <span class="n">user</span> <span class="no">GET</span>    <span class="sr">/users/</span><span class="ss">:id</span><span class="p">(</span><span class="o">.</span><span class="ss">:format</span><span class="p">)</span>      <span class="n">users</span><span class="c1">#show</span>
+</span><span class='line'>          <span class="no">PUT</span>    <span class="sr">/users/</span><span class="ss">:id</span><span class="p">(</span><span class="o">.</span><span class="ss">:format</span><span class="p">)</span>      <span class="n">users</span><span class="c1">#update</span>
+</span><span class='line'>          <span class="no">DELETE</span> <span class="sr">/users/</span><span class="ss">:id</span><span class="p">(</span><span class="o">.</span><span class="ss">:format</span><span class="p">)</span>      <span class="n">users</span><span class="c1">#destroy</span>
+</span><span class='line'>     <span class="n">rsvp</span> <span class="no">GET</span>    <span class="sr">/rsvp(.:format)           users#new</span>
+</span><span class='line'><span class="sr">     root        /</span>                         <span class="n">users</span><span class="c1">#home</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Rails has created all of these routes for you with just that one line of code.</p>
+
+<p>Now, do the following:</p>
+
+<p><strong>1. Comment out &#8216;resources :users&#8217; in routes.rb.</strong><br></br>
+<strong>2. Insert this code into routes.rb:</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">get</span> <span class="s1">&#39;/users&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;users#index&#39;</span>
+</span><span class='line'>  <span class="n">post</span> <span class="s1">&#39;/users&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;users#create&#39;</span>
+</span><span class='line'>  <span class="n">get</span> <span class="s1">&#39;/users/new&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;users#new&#39;</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:new_user</span>
+</span><span class='line'>  <span class="n">get</span> <span class="s1">&#39;/users/:id/edit&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;users#edit&#39;</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:edit_user</span>
+</span><span class='line'>  <span class="n">get</span> <span class="s1">&#39;/users/:id&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;users#show&#39;</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:user</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">put</span> <span class="s1">&#39;/users/:id&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;users#update&#39;</span>
+</span><span class='line'>  <span class="n">delete</span> <span class="s1">&#39;/users/:id&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;users#destroy&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>3. Run &#8216;rake routes&#8217; again within terminal. Your output should be the same as before.</strong></p>
+
+<p><strong>4. Think about what Rails just did. Anytime you generate a new scaffold/resource, the above routes are automatically created so you don&#8217;t have to go through the trouble of writing them yourself. Thanks Rails!</strong></p>
+
+<p>If anyone has other helpful tidbits on rails routes, please link to them in the comments section below.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -352,6 +476,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/03/04/understanding-rails-routes/">Understanding Rails&#8217; Routes</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/02/23/creating-my-first-ruby-app/">Creating My Songkick-to-Calendar App</a>
