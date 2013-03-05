@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails, | Adventures Into Code]]></title>
   <link href="http://dolin.github.com/blog/categories/rails-/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-03-04T22:41:03-05:00</updated>
+  <updated>2013-03-04T22:44:30-05:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -43,7 +43,7 @@ $ rails generate scaffold User</p>
 
 <p>```</p>
 
-<p>This one line of code blew my mind. All of a sudden (if you created the respective views and controller actions), you could navigate to paths such as http://localhost:4000/users, http://localhost:4000/user/new, or even fill out a form and have your data be stored to a database.</p>
+<p>This one line of code blew my mind. All of a sudden (if you created the respective views and controller actions), you could navigate to paths such as http://localhost:4000/users, http://localhost:4000/users/new, or even fill out a form and have your data be stored to a database.</p>
 
 <p>Let's take a closer look at what happens. Run the following within your app's directory in terminal:</p>
 
