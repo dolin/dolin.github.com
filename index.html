@@ -9,7 +9,7 @@
   <meta name="author" content="Danny Olinsky">
 
   
-  <meta name="description" content="We began our foray into Rails last week. As expected, a ton of questions immediately came to mind once diving into a few tutorials. This post will &hellip;">
+  <meta name="description" content="Let&#8217;s talk about rails&#8217; accepts_nested_attributes_for method. What is it? According to Rails API, the method allows you to &#8216;save &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,240 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/17/understanding-nested-attributes/">Understanding Nested Attributes</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-17T15:06:00-04:00" pubdate data-updated="true">Mar 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Let&#8217;s talk about rails&#8217; accepts_nested_attributes_for method.</p>
+
+<p><strong>What is it?</strong></p>
+
+<p>According to Rails API, the method allows you to &#8216;save attributes on associated records through the parent.&#8221;</p>
+
+<p><strong>What does that mean and why should you use it?</strong></p>
+
+<p>Using an example from class, let&#8217;s pretend you&#8217;re creating an app built around horse races. In your app, you have a race model and a horse model. A race has a name and a horse has a name, number, and starting position.</p>
+
+<p>You also have a view to create a new race. When you create a new race you want to populate the race with horses. For simplicity sake, we&#8217;ll only populate the race with one horse for now.</p>
+
+<p>You soon realize that you can&#8217;t figure out a way to create a new horse within a race using the form_for @race helper.</p>
+
+<p><strong>Enter accepts_nested_attributes_for.</strong></p>
+
+<p>Essentially, the method allows you to create a new instance of a horse with it&#8217;s respective attributes at the exact same time of creating the &#8216;parent&#8217; race.</p>
+
+<p>Enter the following into your race model (I am assuming you have already setup the respective database associations):</p>
+
+<p><img src='https://www.evernote.com/shard/s37/sh/03ff5816-2d94-4e54-999e-1838a32c56a7/124e37523a7e02b1e973768156ea6752/res/dfafff18-2618-4eb6-9402-858780bb8dc7/skitch.png'></p>
+
+<p>Enter the following into your new race view:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="n">form_for</span> <span class="vi">@race</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'>
+</span><span class='line'><span class="x">  </span>
+</span><span class='line'><span class="x">  &lt;p&gt;Name </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:name</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
+</span><span class='line'><span class="x">  &lt;p&gt;Description </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:description</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="x">   </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">fields_for</span> <span class="ss">:horses</span> <span class="k">do</span> <span class="o">|</span><span class="n">h</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">    &lt;p&gt;Horse Name </span><span class="cp">&lt;%=</span> <span class="n">h</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:name</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
+</span><span class='line'><span class="x">    &lt;p&gt;Horse Number </span><span class="cp">&lt;%=</span> <span class="n">h</span><span class="o">.</span><span class="n">number_field</span> <span class="ss">:number</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
+</span><span class='line'><span class="x">    &lt;p&gt;Horse Position </span><span class="cp">&lt;%=</span> <span class="n">h</span><span class="o">.</span><span class="n">number_field</span> <span class="ss">:position</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
+</span><span class='line'><span class="x">  </span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">submit</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let&#8217;s inspect one of the attribute fields for the horse.</p>
+
+<p><img src='https://www.evernote.com/shard/s37/sh/87cfaa77-1197-4b8a-81d0-2a200a4d2c0e/b6e6cc4e100158dc30a040962ee692a3/res/8cc5f3a8-b9ff-4742-a261-f9983ec42291/skitch.png'></p>
+
+<p>If we click on &#8216;Create Race&#8217; and raise params before the race is saved, we will get the following:</p>
+
+<p><img src='https://www.evernote.com/shard/s37/sh/47e5986f-1b1e-4d89-9aca-589b5eab46ed/f2d62dd12a80777d85e55c4b33be8a96/res/286437b8-ce06-406b-be12-85fb2646adc2/skitch.png'></p>
+
+<p>As you can see, the paramaters being passed through to the controller for a horse come in the form of race[horses_attributes][0][{attribute}]. horses_attributes is a hash nested within params[:race]</p>
+
+<p>Make sure your create action in your race controller looks something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>      <span class="vi">@race</span> <span class="o">=</span> <span class="no">Race</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:race</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="vi">@race</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>        <span class="n">redirect_to</span> <span class="vi">@race</span><span class="p">,</span> <span class="ss">notice</span><span class="p">:</span> <span class="s1">&#39;Race was successfully created.&#39;</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="n">render</span> <span class="ss">action</span><span class="p">:</span> <span class="s2">&quot;new&quot;</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Just like that you&#8217;ll be able to create horses within your races thanks to mass-assignment. Now let&#8217;s look at what the method is actually doing.</p>
+
+<h4>1st level of abstraction down:</h4>
+
+<p>Instead of using &#8216;accepts_nested_attributes_for&#8217;, we can substitute a writer method in your race model.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Race</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">attr_accessible</span> <span class="ss">:description</span><span class="p">,</span> <span class="ss">:name</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:horse_races</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:horses</span><span class="p">,</span> <span class="ss">:through</span> <span class="o">=&gt;</span> <span class="ss">:horse_races</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">horses_attributes</span><span class="o">=</span><span class="p">(</span><span class="nb">hash</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">hash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">horse_index</span><span class="p">,</span> <span class="n">horse_attributes</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">horse</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">horses</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>      <span class="n">horse_attributes</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">horse_attribute</span><span class="p">,</span> <span class="n">attribute_value</span><span class="o">|</span>
+</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">horse_attribute</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span> <span class="n">horse_value</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>During mass-assignment from your race controller, the horses_attributes= method will be called and a new horse will be created from this iteration.</p>
+
+<h4>2nd level of abstraction down:</h4>
+
+<p>If you&#8217;re like me when you first tried to figure out what&#8217;s going on beneath the hood, you may have written the code in your race controller to handle the task. I initially iterated through the params for both race and horse attributes, assigning the attributes one by one.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">RacesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>    <span class="vi">@race</span> <span class="o">=</span> <span class="no">Race</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+</span><span class='line'>    <span class="vi">@race</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:race</span><span class="o">][</span><span class="ss">:name</span><span class="o">]</span>
+</span><span class='line'>    <span class="vi">@race</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:race</span><span class="o">][</span><span class="ss">:description</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">params</span><span class="o">[</span><span class="ss">:race</span><span class="o">][</span><span class="ss">:horses_attributes</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">horse_index</span><span class="p">,</span> <span class="n">horse_data</span><span class="o">|</span>
+</span><span class='line'>      <span class="vi">@horse</span> <span class="o">=</span> <span class="no">Horse</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>      <span class="vi">@horse</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">horse_data</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>
+</span><span class='line'>      <span class="vi">@horse</span><span class="o">.</span><span class="n">number</span> <span class="o">=</span> <span class="n">horse_data</span><span class="o">[</span><span class="ss">:number</span><span class="o">]</span>
+</span><span class='line'>      <span class="vi">@horse</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">horse_data</span><span class="o">[</span><span class="ss">:position</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="vi">@race</span><span class="o">.</span><span class="n">horses</span> <span class="o">&lt;&lt;</span> <span class="vi">@horse</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@race</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>      <span class="n">redirect_to</span> <span class="vi">@race</span><span class="p">,</span> <span class="ss">notice</span><span class="p">:</span> <span class="s1">&#39;Race was successfully created.&#39;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">render</span> <span class="ss">action</span><span class="p">:</span> <span class="s2">&quot;new&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This way works to get the job done, but it&#8217;s best to take the code out of your controller and create a writer method as shown above in your race model. Or better yet, just use the &#8216;accepts_nested_attributes_for&#8217; method and don&#8217;t worry about creating the writer method at all.</p>
+
+<p>I hope this helps for anyone looking to better understand nested attributes. Feel free to comment below if there are any questions!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -476,6 +710,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/03/17/understanding-nested-attributes/">Understanding Nested Attributes</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/03/04/understanding-rails-routes/">Understanding Rails&#8217; Routes</a>
