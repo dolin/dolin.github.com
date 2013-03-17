@@ -218,7 +218,7 @@
 </span><span class='line'>    <span class="nb">hash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">horse_index</span><span class="p">,</span> <span class="n">horse_attributes</span><span class="o">|</span>
 </span><span class='line'>      <span class="n">horse</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">horses</span><span class="o">.</span><span class="n">new</span>
 </span><span class='line'>      <span class="n">horse_attributes</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">horse_attribute</span><span class="p">,</span> <span class="n">attribute_value</span><span class="o">|</span>
-</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">horse_attribute</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span> <span class="n">horse_value</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">horse</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">horse_attribute</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span> <span class="n">horse_value</span><span class="p">)</span>
 </span><span class='line'>      <span class="k">end</span>
 </span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>  <span class="k">end</span>
