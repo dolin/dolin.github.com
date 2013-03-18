@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Adventures Into Code]]></title>
   <link href="http://dolin.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-03-17T19:49:03-04:00</updated>
+  <updated>2013-03-18T11:38:02-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -112,7 +112,7 @@
 <pre><code>hash.each do |horse_index, horse_attributes|
   horse = self.horses.new
   horse_attributes.each do |horse_attribute, attribute_value|
-    horse.send("#{horse_attribute}=", horse_value)
+    horse.send("#{horse_attribute}=", attribute_value)
   end
 end
 </code></pre>
