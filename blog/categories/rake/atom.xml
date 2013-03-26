@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rake | Adventures Into Code]]></title>
   <link href="http://dolin.github.com/blog/categories/rake/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-03-26T19:41:59-04:00</updated>
+  <updated>2013-03-26T19:59:08-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -62,6 +62,18 @@ end</p>
 <p>end</p>
 
 <p>```</p>
+
+<p>For a quick example, here are the number of stars I had before writing this post (we give one star for writing one blog post).</p>
+
+<p><img src= /images/blogstars.png></p>
+
+<p>Here's the rake task.</p>
+
+<p><img src= /images/raketask.png></p>
+
+<p>And finally, here are my updated stars on my profile.</p>
+
+<p><img src= /images/blogstars2.png></p>
 
 <p>Just like that we can update all of our users' data with one command. Pretty cool.</p>
 ]]></content>
