@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures Into Code]]></title>
   <link href="http://dolin.github.com/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-03-18T11:38:02-04:00</updated>
+  <updated>2013-03-26T19:41:59-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -12,6 +12,67 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Making a Simple Rake Task]]></title>
+    <link href="http://dolin.github.com/blog/2013/03/26/making-a-simple-rake-task/"/>
+    <updated>2013-03-26T19:29:00-04:00</updated>
+    <id>http://dolin.github.com/blog/2013/03/26/making-a-simple-rake-task</id>
+    <content type="html"><![CDATA[<p>Last week, we began our group projects at the school. From here on out we&#8217;ll be building everyday, allday. My group is working on Starboard, an online coding activity tracker. At its core, you earn achievements for different activities such as writing blog posts, commiting to open source projects on Github, and earning badges on Codeschool/Treehouse. To picture the concept, think of the charts when you were a kid at school and your teachers gave you those gold star stickers for doing good things. You were able to not only see your stars, but also how you compared to your fellow students. Similiarly, future Flatiron students will be able to track their coding activities and see how they stack up to the rest of the class.</p>
+
+<p><strong>Why is a rake task needed?</strong></p>
+
+<p>The main data engine driving Starboard is the wrapper we&#8217;ve built to extract information from our sources (currently Github, Treehouse, Codeschool, your blog). Stay tuned for another blog post on how we did this. When you first sign-up, you&#8217;ll be prompted to enter in your usernames/urls, so that we can go out and populate your profile with current achievements. We&#8217;ll be vastly improving the interface, but here&#8217;s our V1 for the profile page to give you a better idea:</p>
+
+<p><img src= /images/starboard-profile.png></p>
+
+<p>After we populate your profile, we&#8217;re going to need to also check for new achievements at scheduled intervals. To do this we first need to implement a rake task. This rake task will need to be called by a cron job eventually, but for now we can call it manually to update all users&#8217; achievements.</p>
+
+<p>Here&#8217;s the code for our rake task, found at app/lib/tasks/achievements.rake:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">namespace</span> <span class="ss">:achievements</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">desc</span> <span class="s2">&quot;Check for new user achievements&quot;</span>
+</span><span class='line'>  <span class="n">task</span> <span class="ss">:update</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">user</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&#8216;namespace&#8217; and &#8216;task&#8217; let us define the name of our task. In this case, we would run <strong>rake achievements:update</strong> in our console to run the task. The meat of this task is querying our database for all of our users and then calling rails&#8217; save method for each user. To update each user&#8217;s data, we have a couple callbacks in the User model that are run before the user is actually saved.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">before_save</span> <span class="ss">:check_blog</span><span class="p">,</span>
+</span><span class='line'>              <span class="ss">:get_profile_pic</span><span class="p">,</span>
+</span><span class='line'>              <span class="ss">:get_external_data</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just like that we can update all of our users&#8217; data with one command. Pretty cool.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Understanding Nested Attributes]]></title>

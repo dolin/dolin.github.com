@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rails, | Adventures Into Code]]></title>
+  <link href="http://dolin.github.com/blog/categories/rails-/atom.xml" rel="self"/>
+  <link href="http://dolin.github.com/"/>
+  <updated>2013-03-26T19:41:59-04:00</updated>
+  <id>http://dolin.github.com/</id>
+  <author>
+    <name><![CDATA[Danny Olinsky]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Making a Simple Rake Task]]></title>
+    <link href="http://dolin.github.com/blog/2013/03/26/making-a-simple-rake-task/"/>
+    <updated>2013-03-26T19:29:00-04:00</updated>
+    <id>http://dolin.github.com/blog/2013/03/26/making-a-simple-rake-task</id>
+    <content type="html"><![CDATA[<p>Last week, we began our group projects at the school. From here on out we'll be building everyday, allday. My group is working on Starboard, an online coding activity tracker. At its core, you earn achievements for different activities such as writing blog posts, commiting to open source projects on Github, and earning badges on Codeschool/Treehouse. To picture the concept, think of the charts when you were a kid at school and your teachers gave you those gold star stickers for doing good things. You were able to not only see your stars, but also how you compared to your fellow students. Similiarly, future Flatiron students will be able to track their coding activities and see how they stack up to the rest of the class.</p>
+
+<p><strong>Why is a rake task needed?</strong></p>
+
+<p>The main data engine driving Starboard is the wrapper we've built to extract information from our sources (currently Github, Treehouse, Codeschool, your blog). Stay tuned for another blog post on how we did this. When you first sign-up, you'll be prompted to enter in your usernames/urls, so that we can go out and populate your profile with current achievements. We'll be vastly improving the interface, but here's our V1 for the profile page to give you a better idea:</p>
+
+<p><img src= /images/starboard-profile.png></p>
+
+<p>After we populate your profile, we're going to need to also check for new achievements at scheduled intervals. To do this we first need to implement a rake task. This rake task will need to be called by a cron job eventually, but for now we can call it manually to update all users' achievements.</p>
+
+<p>Here's the code for our rake task, found at app/lib/tasks/achievements.rake:</p>
+
+<p>``` ruby</p>
+
+<p>namespace :achievements do
+  desc "Check for new user achievements"
+  task :update => :environment do</p>
+
+<pre><code>User.all.each do |user|
+  user.save
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>```</p>
+
+<p>'namespace' and 'task' let us define the name of our task. In this case, we would run <strong>rake achievements:update</strong> in our console to run the task. The meat of this task is querying our database for all of our users and then calling rails' save method for each user. To update each user's data, we have a couple callbacks in the User model that are run before the user is actually saved.</p>
+
+<p>``` ruby</p>
+
+<p>class User &lt; ActiveRecord::Base
+  before_save :check_blog,</p>
+
+<pre><code>          :get_profile_pic,
+          :get_external_data
+</code></pre>
+
+<p>...</p>
+
+<p>end</p>
+
+<p>```</p>
+
+<p>Just like that we can update all of our users' data with one command. Pretty cool.</p>
+]]></content>
+  </entry>
+  
+</feed>

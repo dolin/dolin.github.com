@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Making a Simple Rake Task - Adventures Into Code</title>
+  <meta name="author" content="Danny Olinsky">
+
+  
+  <meta name="description" content="Last week, we began our group projects at the school. From here on out we&#8217;ll be building everyday, allday. My group is working on Starboard, an &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://dolin.github.com/blog/2013/03/26/making-a-simple-rake-task/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Adventures Into Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Adventures Into Code</a></h1>
+  
+    <h2>3 months at The Flatiron School, NYC</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:dolin.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Making a Simple Rake Task</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-26T19:29:00-04:00" pubdate data-updated="true">Mar 26<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Last week, we began our group projects at the school. From here on out we&#8217;ll be building everyday, allday. My group is working on Starboard, an online coding activity tracker. At its core, you earn achievements for different activities such as writing blog posts, commiting to open source projects on Github, and earning badges on Codeschool/Treehouse. To picture the concept, think of the charts when you were a kid at school and your teachers gave you those gold star stickers for doing good things. You were able to not only see your stars, but also how you compared to your fellow students. Similiarly, future Flatiron students will be able to track their coding activities and see how they stack up to the rest of the class.</p>
+
+<p><strong>Why is a rake task needed?</strong></p>
+
+<p>The main data engine driving Starboard is the wrapper we&#8217;ve built to extract information from our sources (currently Github, Treehouse, Codeschool, your blog). Stay tuned for another blog post on how we did this. When you first sign-up, you&#8217;ll be prompted to enter in your usernames/urls, so that we can go out and populate your profile with current achievements. We&#8217;ll be vastly improving the interface, but here&#8217;s our V1 for the profile page to give you a better idea:</p>
+
+<p><img src= /images/starboard-profile.png></p>
+
+<p>After we populate your profile, we&#8217;re going to need to also check for new achievements at scheduled intervals. To do this we first need to implement a rake task. This rake task will need to be called by a cron job eventually, but for now we can call it manually to update all users&#8217; achievements.</p>
+
+<p>Here&#8217;s the code for our rake task, found at app/lib/tasks/achievements.rake:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">namespace</span> <span class="ss">:achievements</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">desc</span> <span class="s2">&quot;Check for new user achievements&quot;</span>
+</span><span class='line'>  <span class="n">task</span> <span class="ss">:update</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">user</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&#8216;namespace&#8217; and &#8216;task&#8217; let us define the name of our task. In this case, we would run <strong>rake achievements:update</strong> in our console to run the task. The meat of this task is querying our database for all of our users and then calling rails&#8217; save method for each user. To update each user&#8217;s data, we have a couple callbacks in the User model that are run before the user is actually saved.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">before_save</span> <span class="ss">:check_blog</span><span class="p">,</span>
+</span><span class='line'>              <span class="ss">:get_profile_pic</span><span class="p">,</span>
+</span><span class='line'>              <span class="ss">:get_external_data</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just like that we can update all of our users&#8217; data with one command. Pretty cool.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Danny Olinsky</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-26T19:29:00-04:00" pubdate data-updated="true">Mar 26<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails-/'>rails,</a>, <a class='category' href='/blog/categories/rake/'>rake</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://dolin.github.com/blog/2013/03/26/making-a-simple-rake-task/" data-via="dannyolinsky" data-counturl="http://dolin.github.com/blog/2013/03/26/making-a-simple-rake-task/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/03/17/understanding-nested-attributes/" title="Previous Post: Understanding Nested Attributes">&laquo; Understanding Nested Attributes</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/03/26/making-a-simple-rake-task/">Making a Simple Rake Task</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/17/understanding-nested-attributes/">Understanding Nested Attributes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/04/understanding-rails-routes/">Understanding Rails' Routes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/23/creating-my-first-ruby-app/">Creating My Songkick-to-Calendar App</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/12/4-reasons-to-learn-to-code/">4 Reasons To Learn To Code</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/dolin">@dolin</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'dolin',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("dannyolinsky", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/dannyolinsky" class="twitter-follow-button" data-show-count="false">Follow @dannyolinsky</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Danny Olinsky -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'dannyolinsky';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://dolin.github.com/blog/2013/03/26/making-a-simple-rake-task/';
+        var disqus_url = 'http://dolin.github.com/blog/2013/03/26/making-a-simple-rake-task/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
