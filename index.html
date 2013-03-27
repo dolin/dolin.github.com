@@ -101,7 +101,7 @@
 
 <p><img src= /images/starboard-profile.png></p>
 
-<p>After we populate your profile, we&#8217;re going to need to also check for new achievements at scheduled intervals. To do this we first need to implement a rake task. This rake task will need to be called by a cron job eventually, but for now we can call it manually to update all users&#8217; achievements.</p>
+<p>After we populate your profile, we&#8217;ll also have to check for new achievements at scheduled intervals. To do this, we first need to implement a rake task. This rake task will be called by a cron job eventually, but for now we can call it manually to update all users&#8217; achievements.</p>
 
 <p>Here&#8217;s the code for our rake task, found at app/lib/tasks/achievements.rake:</p>
 

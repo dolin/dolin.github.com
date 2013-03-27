@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails, | Adventures Into Code]]></title>
   <link href="http://dolin.github.com/blog/categories/rails-/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-03-27T09:31:19-04:00</updated>
+  <updated>2013-03-27T09:34:45-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -26,7 +26,7 @@
 
 <p><img src= /images/starboard-profile.png></p>
 
-<p>After we populate your profile, we're going to need to also check for new achievements at scheduled intervals. To do this we first need to implement a rake task. This rake task will need to be called by a cron job eventually, but for now we can call it manually to update all users' achievements.</p>
+<p>After we populate your profile, we'll also have to check for new achievements at scheduled intervals. To do this, we first need to implement a rake task. This rake task will be called by a cron job eventually, but for now we can call it manually to update all users' achievements.</p>
 
 <p>Here's the code for our rake task, found at app/lib/tasks/achievements.rake:</p>
 
