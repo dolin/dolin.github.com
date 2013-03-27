@@ -3,7 +3,7 @@ layout: post
 title: "Understanding Rails' Routes"
 date: 2013-03-04 22:03
 comments: true
-categories: rails, routes
+categories: rails routes
 ---
 
 We began our foray into Rails last week. As expected, a ton of questions immediately came to mind once diving into a few tutorials. This post will address the routes that Rails automatically builds upon generation of resources and scaffolds.
@@ -31,7 +31,7 @@ RsvpApp::Application.routes.draw do
 
 ```
 
-This one line of code blew my mind. All of a sudden (if you created the respective views and controller actions), you could navigate to paths such as http://localhost:4000/users, http://localhost:4000/user/new, or even fill out a form and have your data be stored to a database. 
+This one line of code blew my mind. All of a sudden (if you created the respective views and controller actions), you could navigate to paths such as http://localhost:4000/users, http://localhost:4000/users/new, or even fill out a form and have your data be stored to a database. 
 
 Let's take a closer look at what happens. Run the following within your app's directory in terminal: 
 
