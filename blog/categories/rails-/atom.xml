@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails, | Adventures Into Code]]></title>
   <link href="http://dolin.github.com/blog/categories/rails-/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-03-26T19:59:08-04:00</updated>
+  <updated>2013-03-27T09:29:52-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -53,8 +53,7 @@ end</p>
 <p>class User &lt; ActiveRecord::Base
   before_save :check_blog,</p>
 
-<pre><code>          :get_profile_pic,
-          :get_external_data
+<pre><code>          :get_external_data
 </code></pre>
 
 <p>...</p>
