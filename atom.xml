@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures Into Code]]></title>
   <link href="http://dolin.github.com/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-04-09T19:38:23-04:00</updated>
+  <updated>2013-04-09T19:45:30-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -26,7 +26,7 @@
 
 <p>What happened? Why can&#8217;t I keep learning at the same pace? Turns out, 1 to 50 follows Hermann Ebbinghaus&#8217; learning curve.</p>
 
-<p><img src="images/lcurve.jpg"></p>
+<p><img src="http://dolin.github.com/images/lcurve.png"></p>
 
 <p>1 to 50 is a simple a simple skill. I learned most of what I could learn in a short period of time and have asymptoted out.</p>
 
@@ -34,7 +34,7 @@
 
 <p>At first, I came to the conclusion that code follows a similiar learning curve. A beginner coder is a sponge ready to absorb and retain all information thrown his or her way. Wrong. Coding follows the S-Curve.</p>
 
-<p><img src="images/scurve.jpg"></p>
+<p><img src="http://dolin.github.com/images/scurve.png"></p>
 
 <p>In this situation, learning starts off slowly and once a foundation is built, begins to increase rapidly. I&#8217;d guess that this is the exact reason why Flatiron assigns 100 hours of pre-work before the program starts. It takes time to prep your brain for learning how to code. However, once you make your way out of the weeds, the pieces begin to fall into place. As with 1 to 50, your brain subconsciously looks for, detects, and provides meaning to patterns based on past experiences.</p>
 
@@ -42,11 +42,11 @@
 
 <p>This idea rang true for me over the weekend. I&#8217;ve been building an online coding activity tracker with my group over the past few weeks. The app let&#8217;s you track your own progress as well as compare yourself to students in your class. Building the intial the database schema along with the ability for users to create/join classes took a couple days. It was our first real foray into rails. Here&#8217;s a shot three weeks in. Props to <a href="http://students.flatironschool.com/tyler-davis">Tyler Davis</a> for the awesome design.</p>
 
-<p><img src="images/scurve.jpg"></p>
+<p><img src="http://dolin.github.com/images/scurve.png"></p>
 
 <p>Fast forward to this past weekend when myself and two other students decided to start on a hackathon organizer and listings app called Codewithus. Although the tables are named differently, the basic functionality of being able to create a hackathon, invite people to the hackathon, and join other hackathons is the same. Instead of a day to discuss and build the database schema, it took us 45 minutes. Instead of a day to build out the initial views and the basic functionality, it took us 2 hours (excuse my minimal design skills). Stepping back from the project, I&#8217;ve realized just how much myself and the rest of the class has learned in a short time period.</p>
 
-<p><img src="images/codewithus.jpg"></p>
+<p><img src="http://dolin.github.com/images/codewithus.png"></p>
 
 <p>While there&#8217;s a never ending amount amount of articles to read, languages to learn, and features to implement, it feels good to know we&#8217;re climbing the curve.</p>
 ]]></content>
