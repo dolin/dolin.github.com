@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures Into Code]]></title>
   <link href="http://dolin.github.com/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-04-09T20:05:49-04:00</updated>
+  <updated>2013-04-10T09:35:42-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -40,7 +40,7 @@
 
 <p>Steve Klapnick alluded to this concept when he came in to speak to the class. While I don&#8217;t remember the exact quote, it went something like, &#8220;The difference between beginner coders and advanced coders is their ability to spot patterns.&#8221;</p>
 
-<p>This idea rang true for me over the weekend. I&#8217;ve been building an online coding activity tracker with my group over the past few weeks. The app let&#8217;s you track your own progress as well as compare yourself to students in your class. Building the intial the database schema along with the ability for users to create/join classes took a couple days. It was our first real foray into rails. Here&#8217;s a shot three weeks in. Props to <a href="http://students.flatironschool.com/tyler-davis">Tyler Davis</a> for the awesome design.</p>
+<p>This idea rang true for me over the weekend. I&#8217;ve been building an online coding activity tracker with my group over the past few weeks. The app let&#8217;s you track your own progress as well as compare yourself to students in your class. Building the intial database schema along with the ability for users to create/join classes took a couple days. It was our first real foray into rails. Here&#8217;s a shot three weeks in. Props to <a href="http://students.flatironschool.com/tyler-davis">Tyler Davis</a> for the awesome design.</p>
 
 <p><img src="http://dolin.github.com/images/starboard.png"></p>
 
