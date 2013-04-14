@@ -26,7 +26,7 @@ Essentially, the method allows you to create a new instance of a horse with it's
 
 Enter the following into your race model (I am assuming you have already setup the respective database associations):
 
-<img src='https://www.evernote.com/shard/s37/sh/03ff5816-2d94-4e54-999e-1838a32c56a7/124e37523a7e02b1e973768156ea6752/res/dfafff18-2618-4eb6-9402-858780bb8dc7/skitch.png'>
+<img src='images/horses1.png'>
 
 Enter the following into your new race view:
 
@@ -54,11 +54,11 @@ Enter the following into your new race view:
 
 Let's inspect one of the attribute fields for the horse.
 
-<img src='https://www.evernote.com/shard/s37/sh/87cfaa77-1197-4b8a-81d0-2a200a4d2c0e/b6e6cc4e100158dc30a040962ee692a3/res/8cc5f3a8-b9ff-4742-a261-f9983ec42291/skitch.png'>
+<img src='images/horses2.png'>
 
 If we click on 'Create Race' and raise params before the race is saved, we will get the following:
 
-<img src='https://www.evernote.com/shard/s37/sh/47e5986f-1b1e-4d89-9aca-589b5eab46ed/f2d62dd12a80777d85e55c4b33be8a96/res/286437b8-ce06-406b-be12-85fb2646adc2/skitch.png'>
+<img src='images/horses3.png'>
 
 
 As you can see, the paramaters being passed through to the controller for a horse come in the form of race[horses_attributes][0][{attribute}]. horses_attributes is a hash nested within params[:race]
