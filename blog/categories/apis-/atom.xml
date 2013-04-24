@@ -4,7 +4,7 @@
   <title><![CDATA[Category: APIs, | Adventures Into Code]]></title>
   <link href="http://dolin.github.com/blog/categories/apis-/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-04-24T18:29:26-04:00</updated>
+  <updated>2013-04-24T18:30:36-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -38,7 +38,7 @@ Here are the steps I suggest you take when building API wrappers:</p>
 
 <p>Without writing a line of code, read the documentation (if there is any) and ask for json objects back. For Codeschool, all that was required was a json get request for a user profile's information: http://www.codeschool.com/users/dolinsky.json</p>
 
-<p><img src="images/codeschool.png"></p>
+<p><img src="http://dolin.github.com/images/codeschool.png"></p>
 
 <h4>Play with the data in console</h4>
 
