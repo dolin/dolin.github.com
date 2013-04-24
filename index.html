@@ -9,7 +9,7 @@
   <meta name="author" content="Danny Olinsky">
 
   
-  <meta name="description" content="1 to 50. One of the simplest, but most addicting apps out there. A couple students told me about the game a few weeks back and ever since it has &hellip;">
+  <meta name="description" content="First, the boiler plate for Starboard, one of my Flatiron School projects: What is it? A modern-take on an old fashioned gold star board. Why does it &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,213 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/24/building-api-wrappers-for-your-application/">Building API Wrappers for Your Application</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-24T18:02:00-04:00" pubdate data-updated="true">Apr 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>First, the boiler plate for <a href="http://strboard.com">Starboard</a>, one of my Flatiron School projects:</p>
+
+<h4>What is it?</h4>
+
+
+<p>A modern-take on an old fashioned gold star board.</p>
+
+<h4>Why does it matter?</h4>
+
+
+<p>The Flatiron School is hard. Throughout the semester students are learning new material, working on github projects, writing blog posts, completing online coding tutorials, and much more. Without having much time to realize how much has been accomplished, Starboard becomes the hub to track all of their achievements. From completing Codeschool courses, to committing to an open source project, to giving someone else a star for help with a bug fix, Starboard is an app to collectively celebrate learning to code.</p>
+
+<p>One of my favorite problems to solve when building the application was how to normalize data (creating user achievements) for actions taken on other websites such as completing a Codeschool course or making a commit to an opensource project. The complete gist is below Each service we used would return a uniquely formatted set of data. Treehouse and Codeschool also have 0 documentation for their APIs. Figuring out how to manipulate these different data sets was the engine driving our application.
+Here are the steps I suggest you take when building API wrappers:</p>
+
+<h4>Explore the API in your browser</h4>
+
+
+<p>Without writing a line of code, read the documentation (if there is any) and ask for json objects back. For Codeschool, all that was required was a json get request for a user profile&#8217;s information: http://www.codeschool.com/users/dolinsky.json</p>
+
+<p><img src="images/codeschool.png"></p>
+
+<h4>Play with the data in console</h4>
+
+
+<p>Using the json and open-uri gems, test manipulating the data in console. How is the json structured? What keys do you need to chain together in order to get to the values you are looking for? In our case, we were looking for the &#8216;title&#8217; of the &#8216;completed&#8217; &#8216;courses&#8217;.</p>
+
+<h4>Decide on your output structure</h4>
+
+
+<p>Once you have a solid understanding of what you can get back from each API, begin to think through how you can normalize the data to use in your own application and save to your database. For instance, would a hash work best with sets of key/value pairs or a simpler array? We decided that an array would be best for us. At this point, all we knew was that each wrapper (Codeschool, Treehouse, Github, Blog) would need to return an array of strings. As an example, Codeschool could return [&#8220;Rails for Zombies&#8221;, &#8220;Ruby Bits&#8221;], while Github could return [&#8220;Committed to an open source project&#8221;, &#8220;Had a repo forked&#8221;]. The individual wrappers will contain their own methods for getting us to the final array, but in the end, an array will be needed.</p>
+
+<p>Here&#8217;s our get_data method for Codeschool:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">cs_json</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://codeschool.com/users/</span><span class="si">#{</span><span class="n">username</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">cs_json</span><span class="o">.</span><span class="n">code</span>
+</span><span class='line'>      <span class="k">when</span> <span class="mi">200</span>
+</span><span class='line'>        <span class="nb">self</span><span class="o">.</span><span class="n">get_completed_courses</span><span class="p">(</span><span class="n">cs_json</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">when</span> <span class="mi">404</span>
+</span><span class='line'>        <span class="nb">p</span> <span class="s2">&quot;Codeschool username not found - </span><span class="si">#{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kp">nil</span>
+</span><span class='line'>      <span class="k">when</span> <span class="mi">500</span><span class="o">.</span><span class="n">.</span><span class="mi">600</span>
+</span><span class='line'>        <span class="nb">p</span> <span class="s2">&quot;ERROR Pulling from Codeschool </span><span class="si">#{</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h4>Normalize methods</h4>
+
+
+<p>Before an array is returned from a wrapper, a method needs to be called to ask for data from an API. As you can see in the gist below, each of our wrappers has the &#8216;get_data&#8217; method. So, we could call things like Treehouse.get_data(username) or Blog.get_data(blog_url). Test the method by itself. Write additional methods needed within the wrapper&#8217;s class to help you manipulate the data for your application. For example, Codeschool.get_data creates a hash from the json returned and then calls the get_completed_courses method to iterate through the hash and return an array of completed courses.</p>
+
+<h4>Create services hash</h4>
+
+
+<p>After creation of a user, we call user.get_external_data in ther user model. This method contains a hash of service => identifier</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">def</span> <span class="nf">get_external_data</span>
+</span><span class='line'>    <span class="n">external_services</span> <span class="o">=</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="s1">&#39;Treehouse&#39;</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">treehouse_username</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;Codeschool&#39;</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">codeschool_username</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;Github&#39;</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">github_username</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;Blog&#39;</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'> <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h4>Call individual wrappers</h4>
+
+
+<p> Once you have your hash, iterate through it, calling your predefined get_data methods.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">get_external_data</span>
+</span><span class='line'>    <span class="n">external_services</span> <span class="o">=</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="s1">&#39;Treehouse&#39;</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">treehouse_username</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;Codeschool&#39;</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">codeschool_username</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;Github&#39;</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">github_username</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;Blog&#39;</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">external_services</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">service</span><span class="p">,</span> <span class="n">identifier</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">array</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">classify</span><span class="o">.</span><span class="n">constantize</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'> <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h4>Save your data</h4>
+
+
+<p> Now comes the fun part. We have the data needed stored in arrays for each service and we can begin storing the data how we see fit in our application. In our case, we created a method called check_achievement_by_array.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>   <span class="k">def</span> <span class="nf">get_external_data</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">external_services</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">service</span><span class="p">,</span> <span class="n">identifier</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">array</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">classify</span><span class="o">.</span><span class="n">constantize</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">check_achievement_by_array</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'> <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> You&#8217;ll see that the code looks slightly different in the gist below, but don&#8217;t worry about that. We are using Sidekiq to offload these API calls to a background service (another blog post to come). You can make these API calls work without Sidekiq.</p>
+
+<p> For each element in the returned array, we then call check_achievement_by_string. Without going into the details of this method, we are essentially checking to see if we have the given star in our database already, if that user already has that star, and if not, create the &#8216;achievement&#8217; for that user.</p>
+
+<h4>Check your database</h4>
+
+
+<p> Does your data look the way you want it to look? Is it there? It may not be. We fixed many bugs along the way to actually getting our wrappers to work. Whether it&#8217;s the data itself, the way you are manipulating it, or an error from the API, you will need to work through these bugs to eventually store the data you need. But, it&#8217;s worth it.</p>
+
+<p>I hope this helps as an example for those who are depending on mulitiple API&#8217;s to drive their own application. Feel free to comment below with other suggestions!</p>
+
+<div><script src='https://gist.github.com/5454674.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -876,6 +1083,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/04/24/building-api-wrappers-for-your-application/">Building API Wrappers For Your Application</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/04/09/code-and-the-learning-curve/">Code and the Learning Curve</a>
       </li>
     
@@ -889,10 +1100,6 @@
     
       <li class="post">
         <a href="/blog/2013/03/04/understanding-rails-routes/">Understanding Rails&#8217; Routes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/02/23/creating-my-first-ruby-app/">Creating My Songkick-to-Calendar App</a>
       </li>
     
   </ul>
