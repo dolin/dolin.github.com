@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: ruby, | Adventures Into Code]]></title>
-  <link href="http://dolin.github.com/blog/categories/ruby-/atom.xml" rel="self"/>
+  <title><![CDATA[Category: ruby | Adventures Into Code]]></title>
+  <link href="http://dolin.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-04-24T18:30:36-04:00</updated>
+  <updated>2013-04-25T11:44:12-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -30,7 +30,9 @@
 
 <p>The Flatiron School is hard. Throughout the semester students are learning new material, working on github projects, writing blog posts, completing online coding tutorials, and much more. Without having much time to realize how much has been accomplished, Starboard becomes the hub to track all of their achievements. From completing Codeschool courses, to committing to an open source project, to giving someone else a star for help with a bug fix, Starboard is an app to collectively celebrate learning to code.</p>
 
-<p>One of my favorite problems to solve when building the application was how to normalize data (creating user achievements) for actions taken on other websites such as completing a Codeschool course or making a commit to an opensource project. The complete gist is below Each service we used would return a uniquely formatted set of data. Treehouse and Codeschool also have 0 documentation for their APIs. Figuring out how to manipulate these different data sets was the engine driving our application.
+<p>One of my favorite problems to solve when building the application was how to normalize data (creating user achievements) for actions taken on other websites such as completing a Codeschool course or making a commit to an opensource project. The complete gist is below.</p>
+
+<p>Each service we used would return a uniquely formatted set of data. Treehouse and Codeschool also have 0 documentation for their APIs. Figuring out how to manipulate these different data sets was the engine driving our application.
 Here are the steps I suggest you take when building API wrappers:</p>
 
 <h4>Explore the API in your browser</h4>
@@ -49,6 +51,11 @@ Here are the steps I suggest you take when building API wrappers:</p>
 
 
 <p>Once you have a solid understanding of what you can get back from each API, begin to think through how you can normalize the data to use in your own application and save to your database. For instance, would a hash work best with sets of key/value pairs or a simpler array? We decided that an array would be best for us. At this point, all we knew was that each wrapper (Codeschool, Treehouse, Github, Blog) would need to return an array of strings. As an example, Codeschool could return ["Rails for Zombies", "Ruby Bits"], while Github could return ["Committed to an open source project", "Had a repo forked"]. The individual wrappers will contain their own methods for getting us to the final array, but in the end, an array will be needed.</p>
+
+<h4>Normalize methods</h4>
+
+
+<p>Before an array is returned from a wrapper, a method needs to be called to ask for data from an API. As you can see in the gist below, each of our wrappers has the 'get_data' method. So, we could call things like Treehouse.get_data(username) or Blog.get_data(blog_url). Test the method by itself. Write additional methods needed within the wrapper's class to help you manipulate the data for your application. For example, Codeschool.get_data creates a hash from the json returned and then calls the get_completed_courses method to iterate through the hash and return an array of completed courses.</p>
 
 <p>Here's our get_data method for Codeschool:</p>
 
@@ -72,11 +79,6 @@ end
 <p>end</p>
 
 <p>```</p>
-
-<h4>Normalize methods</h4>
-
-
-<p>Before an array is returned from a wrapper, a method needs to be called to ask for data from an API. As you can see in the gist below, each of our wrappers has the 'get_data' method. So, we could call things like Treehouse.get_data(username) or Blog.get_data(blog_url). Test the method by itself. Write additional methods needed within the wrapper's class to help you manipulate the data for your application. For example, Codeschool.get_data creates a hash from the json returned and then calls the get_completed_courses method to iterate through the hash and return an array of completed courses.</p>
 
 <h4>Create services hash</h4>
 
@@ -149,7 +151,7 @@ end
 
 <p> You'll see that the code looks slightly different in the gist below, but don't worry about that. We are using Sidekiq to offload these API calls to a background service (another blog post to come). You can make these API calls work without Sidekiq.</p>
 
-<p> For each element in the returned array, we then call check_achievement_by_string. Without going into the details of this method, we are essentially checking to see if we have the given star in our database already, if that user already has that star, and if not, create the 'achievement' for that user.</p>
+<p> For each element in the returned array, we then call check_achievement_by_string. We are essentially checking to see if we have the given star in our database already, if that user already has that star, and if not, create the 'achievement' for that user.</p>
 
 <h4>Check your database</h4>
 
