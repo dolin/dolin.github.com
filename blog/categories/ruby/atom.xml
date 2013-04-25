@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Adventures Into Code]]></title>
   <link href="http://dolin.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-04-25T11:44:12-04:00</updated>
+  <updated>2013-04-25T11:46:41-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -135,23 +135,56 @@ end
 
 <p>``` ruby</p>
 
-<p>   def get_external_data</p>
+<p>def get_external_data
+  ...</p>
 
-<pre><code>...
+<p>  external_services.each do |service, identifier|</p>
 
-external_services.each do |service, identifier|
-  array = service.classify.constantize.get_data(identifier)
-  check_achievement_by_array(array)
-end
+<pre><code>array = service.classify.constantize.get_data(identifier)
+check_achievements_by_array(array)
 </code></pre>
 
-<p> end</p>
+<p>  end
+end</p>
 
 <p>```</p>
 
 <p> You'll see that the code looks slightly different in the gist below, but don't worry about that. We are using Sidekiq to offload these API calls to a background service (another blog post to come). You can make these API calls work without Sidekiq.</p>
 
 <p> For each element in the returned array, we then call check_achievement_by_string. We are essentially checking to see if we have the given star in our database already, if that user already has that star, and if not, create the 'achievement' for that user.</p>
+
+<p>``` ruby</p>
+
+<p>def check_achievement_by_string(string, source_string)
+  source = Source.where(:name => source_string).first
+  star = Star.where(:name => string, :source_id => source.id).first_or_create
+  if source.name == 'Blog'</p>
+
+<pre><code>self.achievements.create(:star_id =&gt; star.id)
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>unless self.star_ids.include? star.id
+  self.achievements.create(:star_id =&gt; star.id)
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>def check_achievements_by_array(array, source_string)
+  if array</p>
+
+<pre><code>array.each do |item|
+  self.check_achievement_by_string(item, source_string)
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>```</p>
 
 <h4>Check your database</h4>
 

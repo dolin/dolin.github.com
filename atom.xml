@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures Into Code]]></title>
   <link href="http://dolin.github.com/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-04-25T11:44:12-04:00</updated>
+  <updated>2013-04-25T11:46:41-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -167,20 +167,63 @@ Here are the steps I suggest you take when building API wrappers:</p>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>   <span class="k">def</span> <span class="nf">get_external_data</span>
-</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">get_external_data</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">external_services</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">service</span><span class="p">,</span> <span class="n">identifier</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">array</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">classify</span><span class="o">.</span><span class="n">constantize</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
-</span><span class='line'>      <span class="n">check_achievement_by_array</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'> <span class="k">end</span>
+</span><span class='line'>  <span class="n">external_services</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">service</span><span class="p">,</span> <span class="n">identifier</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">array</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">classify</span><span class="o">.</span><span class="n">constantize</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">check_achievements_by_array</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p> You&#8217;ll see that the code looks slightly different in the gist below, but don&#8217;t worry about that. We are using Sidekiq to offload these API calls to a background service (another blog post to come). You can make these API calls work without Sidekiq.</p>
 
 <p> For each element in the returned array, we then call check_achievement_by_string. We are essentially checking to see if we have the given star in our database already, if that user already has that star, and if not, create the &#8216;achievement&#8217; for that user.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">check_achievement_by_string</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">source_string</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">source</span> <span class="o">=</span> <span class="no">Source</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="n">source_string</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>  <span class="n">star</span> <span class="o">=</span> <span class="no">Star</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="n">string</span><span class="p">,</span> <span class="ss">:source_id</span> <span class="o">=&gt;</span> <span class="n">source</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">first_or_create</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;Blog&#39;</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">achievements</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:star_id</span> <span class="o">=&gt;</span> <span class="n">star</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="k">unless</span> <span class="nb">self</span><span class="o">.</span><span class="n">star_ids</span><span class="o">.</span><span class="n">include?</span> <span class="n">star</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">achievements</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:star_id</span> <span class="o">=&gt;</span> <span class="n">star</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">check_achievements_by_array</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">source_string</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">array</span>
+</span><span class='line'>    <span class="n">array</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">check_achievement_by_string</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">source_string</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
 
 <h4>Check your database</h4>
 
