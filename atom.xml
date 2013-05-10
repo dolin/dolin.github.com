@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures Into Code]]></title>
   <link href="http://dolin.github.com/atom.xml" rel="self"/>
   <link href="http://dolin.github.com/"/>
-  <updated>2013-04-25T11:46:41-04:00</updated>
+  <updated>2013-05-10T12:02:34-04:00</updated>
   <id>http://dolin.github.com/</id>
   <author>
     <name><![CDATA[Danny Olinsky]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Durham to NYC to SF]]></title>
+    <link href="http://dolin.github.com/blog/2013/05/10/durham-to-nyc-to-sf/"/>
+    <updated>2013-05-10T11:56:00-04:00</updated>
+    <id>http://dolin.github.com/blog/2013/05/10/durham-to-nyc-to-sf</id>
+    <content type="html"><![CDATA[<p>Flatiron wrapped up late April and the past couple of weeks have been a crazy mix of coffee shop meetings, working on side projects, interviewing, and spending too much time in email. Since graduating, I&#8217;ve been looking at two different options for my next step: 1. Find a junior ruby dev position to solidify what I&#8217;ve learned and keep building out my dev chops. 2. Find a co-founding role with a team looking for a utility player&#8230;and keep building out my dev chops.</p>
+
+<p>To cut right to it, I&#8217;ll be joining Scott and Steve Klein to co-found <a href="http://statuspage.io">statuspage.io</a>.</p>
+
+<p>You can probably guess what the company does by it&#8217;s name, but think status pages as a service. Every top tech company (Amazon/Twitter/Facebook/Github&#8230;etc) has a status page for the developers building ontop of their platforms to keep up to date with the status of their servers, errors, uptime, and other metrics. Here&#8217;s a <a href="https://status.github.com">great example from Github</a>. Following after these tech giants, many smaller software companies are building their own status pages for their own developers as well as customers/users.The goal is to take over this emerging market and become the go-to tool for companies&#8217; status pages.</p>
+
+<h4>Backstory</h4>
+
+
+<p>Just getting into the Durham startup scene about two years ago, I would regularly schedule coffee with entrepreneuers and other people working for startups, including Scott. He had recently sold his first company to ReverbNation and we took the time to pass ideas back and forth as well as chat about the company he was currently working on. I remember leaving that meeting thinking, &#8220;This is a smart guy. We should stay in touch.&#8221;</p>
+
+<p>Fast forward a couple years and we reconnected just as StatusPage was interviewing for Y Combinator.</p>
+
+<p>After being accepted to YC, a badge of honor in itself, we decided to have a few more serious conversations and Scott pulled in his brother co-founder, Steve.</p>
+
+<p>When deciding to bring on another co-founder or join as a co-founder yourself, there is a bit of a dance that takes place. Each side needs to figure out what the other side can bring to the table. Each side also needs to figure out if they personally like the other side. It turned out that Scott and Steve were looking for a generalist co-founder. Someone who could build a sales process, crank out content marketing, ship code, and whatever else needs to get done when you start a company. Thankfully, that&#8217;s exactly what I was looking for in a co-founding role.</p>
+
+<h3>Why I&#8217;m Joining</h3>
+
+
+<p>A while back I wrote a post on <a href="http://dannyolinsky.tumblr.com">how to choose the right startup as an early employee</a>. While there are some additional questions to consider when potentially joining as a co-founder, I tried to ask myself and Scott/Steve most of these questions.</p>
+
+<h4>Team</h4>
+
+
+<p>The most important part. Scott and Steve are awesome guys, incredibly smart, and top notch developers.</p>
+
+<h4>Problem/Market</h4>
+
+
+<p>The intersection of backend technology, support, and marketing is an emerging market and in my opinion, there will be big winners. Companies that are transparent and open with their user bases will edge out those that are not.</p>
+
+<p>Also, we&#8217;re not inventing this concept. Companies are already building out status pages. I see a big opportunity if we can build a product that a) saves them the hassle of building their own from scratch, b) integrates out of the box with other systems such as New Relic and Pingdom, c) displays custom metrics as a support, marketing, or sales tool.</p>
+
+<h4>Solution</h4>
+
+
+<p>I signed up for a free trial and the product was easy to use and coherent. I received a series of emails from their free trial drip campaign. Another sign, albeit small, that these guys have thought through the process of what it takes to get someone from a free trial to a paying customer.</p>
+
+<h4>My Role</h4>
+
+
+<p>Over the past 3 months I&#8217;ve come to love building things with code. I told Scott that if he was just looking for someone to take over sales, then I&#8217;m not the right guy. Instead, I received this note in an email: &#8220;Most importantly: tell us what you need and when you need it and we&#8217;ll do our best to make sure everyone is having a blast. When we stop having fun the company will die, so don&#8217;t feel like you are forced into working only on sales because that&#8217;s what you know. I want you to become the best developer you&#8217;ve ever known, and if it means you banging your head against the wall for 12 weeks, then let&#8217;s do that.&#8221;</p>
+
+<p>Do I expect to be coding the entire time during YC? Most likely not. I&#8217;m looking forward to doing a mix of everything from bringing new customers on board, figuring out the right products to build, and cap_deploying. But, the decision to join was an easy one after reading that note.</p>
+
+<h4>What&#8217;s next?</h4>
+
+
+<p>I&#8217;m moving to the bay area late May to attend YC with the company and couldn&#8217;t be more excited for the whirlwind that is the next 3 months.</p>
+
+<h4>A couple last words</h4>
+
+
+<p>Meet people. You never know when a 45 minute coffee shop meeting from way back when can lead to your next opportunity.</p>
+
+<p>Stealing this one from Avi, but for upcoming Flatiron students, blog blog blog. Every important conversation I&#8217;ve had with companies over the past couple of weeks has included a conversation about problems I&#8217;ve had fun solving and code that I&#8217;m proud of. It&#8217;s been incredibly helpful to follow up and point to a blog post you have a written.</p>
+
+<p>That&#8217;s all for now!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Building API Wrappers For Your Application]]></title>
